@@ -6,7 +6,7 @@ import socket
 
 def get_redirect_to_https(website):
     try:
-        connection = http.client.HTTPSConnection(website, timeout=2)
+        connection = http.client.HTTPConnection(website, timeout=3)
         connection.request("GET", "/")
         response = connection.getresponse()
         print(response.status)
