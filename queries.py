@@ -17,10 +17,13 @@ def get_ip(website, type):
     dns_servers = process_txt("dns-servers.txt")
     ip_arr = []
     for dns_server in dns_servers:
-        result = subprocess.check_output(["nslookup", f"-type={type}", website, dns_server],
-                                         timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
-        output = result[result.find("answer:"):].split("\n")
-        for data in output:
-            if 'Address' in data:
-                ip_arr.append(data.replace('Address: ', ''))
+        try:
+            result = subprocess.check_output(["nslookup", f"-type={type}", website, dns_server],
+                                             timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
+            output = result[result.find("answer:"):].split("\n")
+            for data in output:
+                if 'Address' in data:
+                    ip_arr.append(data.replace('Address: ', ''))
+        except subprocess.TimeoutExpired:
+            continue
     print(ip_arr)
