@@ -13,7 +13,7 @@ def get_redirect_to_https(website):
             return False
         print(response.getheaders())
         redirect_link = response.getheader("Location")
-        if "https:" in redirect_link:
+        if redirect_link is not None and "https:" in redirect_link:
             return True
         else:
             return False
