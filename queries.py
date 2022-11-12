@@ -15,7 +15,7 @@ def get_ipv4(website):
 
 def get_ip(website, type):
     dns_servers = process_txt("dns-servers.txt")
-    ip_arr = []
+    ip_arr = {}
     for dns_server in dns_servers:
         try:
             result = subprocess.check_output(["nslookup", f"-type={type}", website, dns_server],
@@ -23,7 +23,7 @@ def get_ip(website, type):
             output = result[result.find("answer:"):].split("\n")
             for data in output:
                 if 'Address' in data:
-                    ip_arr.append(data.replace('Address: ', ''))
+                    ip_arr.update(data.replace('Address: ', ''))
         except subprocess.TimeoutExpired:
             continue
     print(ip_arr)
