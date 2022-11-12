@@ -1,4 +1,6 @@
-import sys, time, json
+import json
+import time
+
 from queries import *
 
 if __name__ == '__main__':
@@ -7,7 +9,7 @@ if __name__ == '__main__':
     websites = process_txt(website_file)
     # create dictionary + populate entries:
     domain_information = {}
-    for website in websites[:3]:
+    for website in websites[:5]:
         # set scan time
         domain_information[website] = {"scan_time": time.time()}
         # set ipv4 addresses
@@ -18,8 +20,13 @@ if __name__ == '__main__':
         ipv6_list = get_ipv6(website)
         if len(ipv6_list) != 0:
             domain_information[website]["ipv6_addresses"] = ipv6_list
+        http_server = get_http_server(website)
+        if http_server is not None:
+            domain_information[website]["http_server"] = http_server
+        else:
+            null = json.JSONEncoder().encode(None)
+            domain_information[website]["http_server"] = null
     # write data to output file:
     output_file = sys.argv[2]
     with open(output_file, "w") as f:
         json.dump(domain_information, f, sort_keys=True, indent=4)
-

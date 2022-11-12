@@ -1,6 +1,13 @@
+import http.client
 import subprocess
 import sys
 
+
+def get_http_server(website):
+    connection = http.client.HTTPSConnection(website)
+    connection.request("GET", "/")
+    response = connection.getresponse()
+    return response.getheader("Server")
 
 def process_txt(file):
     with open(file, "r") as f:
