@@ -5,7 +5,7 @@ import socket
 
 
 def get_insecure_http(ip):
-    result = subprocess.check_output(["nmap", ip, "p", "80"],
+    result = subprocess.check_output(["nmap", ip, "-p", "80"],
                                      timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
     print(result)
 
