@@ -17,8 +17,9 @@ if __name__ == '__main__':
         # set ipv6 addresses
         ipv6_list = get_ipv6(website)
         if len(ipv6_list) != 0:
+            print(domain_information)
             domain_information[website]["ipv6_addresses"] = ipv6_list
-
+            print(domain_information)
     # write data to output file:
     output_file = sys.argv[2]
     with open(output_file, "w") as f:
