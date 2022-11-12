@@ -4,10 +4,11 @@ import sys
 
 
 def get_http_server(website):
-    connection = http.client.HTTPSConnection(website)
+    connection = http.client.HTTPSConnection(website, timeout=2)
     connection.request("GET", "/")
     response = connection.getresponse()
     return response.getheader("Server")
+
 
 def process_txt(file):
     with open(file, "r") as f:
