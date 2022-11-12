@@ -1,13 +1,17 @@
 import http.client
 import subprocess
 import sys
+import socket
 
 
 def get_http_server(website):
-    connection = http.client.HTTPSConnection(website, timeout=2)
-    connection.request("GET", "/")
-    response = connection.getresponse()
-    return response.getheader("Server")
+    try:
+        connection = http.client.HTTPSConnection(website, timeout=2)
+        connection.request("GET", "/")
+        response = connection.getresponse()
+        return response.getheader("Server")
+    except socket.timeout:
+        return None
 
 
 def process_txt(file):
