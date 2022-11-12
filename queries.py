@@ -13,6 +13,10 @@ def get_ipv4(website):
     return get_ip(website, 'a')
 
 
+def get_ipv6(website):
+    return get_ip(website, 'aaaa')
+
+
 def get_ip(website, type):
     dns_servers = process_txt("dns-servers.txt")
     ip_arr = set()
@@ -27,4 +31,4 @@ def get_ip(website, type):
                     ip_arr.add(data.replace('Address: ', ''))
         except subprocess.TimeoutExpired:
             continue
-    print(ip_arr)
+    return list(ip_arr)

@@ -8,8 +8,16 @@ if __name__ == '__main__':
     # create dictionary + populate entries:
     domain_information = {}
     for website in websites[:1]:
+        # set scan time
         domain_information[website] = {"scan_time": time.time()}
-        get_ipv4(website)
+        # set ipv4 addresses
+        ipv4_list = get_ipv4(website)
+        if len(ipv4_list) != 0:
+            domain_information[website]["ipv4_addresses"] = ipv4_list
+        # set ipv6 addresses
+        ipv6_list = get_ipv6(website)
+        if len(ipv4_list) != 0:
+            domain_information[website]["ipv4_addresses"] = ipv4_list
 
     # write data to output file:
     output_file = sys.argv[2]
