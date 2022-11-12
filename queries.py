@@ -17,11 +17,8 @@ def get_ip(website):
                                          timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
         print(result)
         output = result[result.find("answer:"):].split("\n")
-        # print(output)
-        temp_arr = []
+        print(output)
         for data in output:
             if 'Address' in data:
-                temp_arr.append(data.replace('Address: ', ''))
-        temp_arr.pop(0)
-        ip_arr.append(temp_arr)
+                ip_arr.append(data.replace('Address: ', ''))
     print(ip_arr)
