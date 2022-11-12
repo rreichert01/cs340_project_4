@@ -25,7 +25,7 @@ if __name__ == '__main__':
             domain_information[website]["http_server"] = http_server
         else:
             null = json.JSONEncoder().encode(None)
-            domain_information[website]["http_server"] = null
+            domain_information[website]["http_server"] = None
     # write data to output file:
     output_file = sys.argv[2]
     with open(output_file, "w") as f:
