@@ -1,7 +1,5 @@
 import sys, time, json
 
-
-
 if __name__ == '__main__':
     # pre-process website names
     website_file = sys.argv[1]
@@ -18,3 +16,5 @@ if __name__ == '__main__':
     output_file = sys.argv[2]
     with open(output_file, "w") as f:
         json.dump(domain_information, f, sort_keys=True, indent=4)
+
+        #update repo on moore
