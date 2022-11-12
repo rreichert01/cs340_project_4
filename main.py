@@ -22,6 +22,8 @@ if __name__ == '__main__':
             domain_information[website]["ipv6_addresses"] = ipv6_list
         # set http server
         domain_information[website]["http_server"] = get_http_server(website)
+        # set insecure http request
+        get_insecure_http(domain_information[website]["ipv4_addresses"][0])
 
     # write data to output file:
     output_file = sys.argv[2]
