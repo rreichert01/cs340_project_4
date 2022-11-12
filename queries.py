@@ -9,7 +9,8 @@ def get_redirect_to_https(website):
         connection = http.client.HTTPSConnection(website, timeout=2)
         connection.request("GET", "/")
         response = connection.getresponse()
-        if 300 <= response.status < 310:
+        print(response.status)
+        if not 300 <= response.status < 310:
             return False
         redirect_link = response.getheader("Location")
         print(redirect_link)
