@@ -1,12 +1,10 @@
 import sys, time, json
+from queries import *
 
 if __name__ == '__main__':
     # pre-process website names
     website_file = sys.argv[1]
-    with open(website_file, "r") as websites:
-        websites = websites.readlines()
-    for index, website in enumerate(websites):
-        websites[index] = website.strip()
+    websites = process_txt(website_file)
     # create dictionary + populate entries:
     domain_information = {}
     for website in websites:
