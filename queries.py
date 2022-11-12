@@ -24,7 +24,7 @@ def rec_get_redirect_to_https(website, iter):
             if redirect_link is not None and "http://" in redirect_link:
                 print(redirect_link)
                 print(f"link: {redirect_link}, should be: {redirect_link[7:]} boolean: {redirect_link[-1] == '/'}, {redirect_link[-1]}")
-                if redirect_link[-1] == '/':
+                if redirect_link[-1] != '/':
                     new_link = redirect_link[7:]
                 else:
                     new_link = redirect_link[:-1][7:]
