@@ -5,11 +5,16 @@ import socket
 
 
 def get_insecure_http(ip):
-    result = subprocess.check_output(["nmap", ip, "-p", "80"],
-                                     timeout=15, stderr=subprocess.STDOUT).decode("utf - 8")
-    result = result[result.find("80/tcp"):][:result.find("\n")]
-    # result = result[:result.find("\n")]
-    print(f"this is my result:{result}")
+    try:
+        result = subprocess.check_output(["nmap", ip, "-p", "80"],
+                                         timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
+        answer = result[result.find("80/tcp"):][:result.find("\n")]
+        if "80/tcp open  http" in answer:
+            return True
+        else:
+            return False
+    except subprocess.TimeoutExpired:
+        return False
 
 def get_http_server(website):
     try:

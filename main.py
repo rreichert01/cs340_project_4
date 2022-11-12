@@ -9,7 +9,7 @@ if __name__ == '__main__':
     websites = process_txt(website_file)
     # create dictionary + populate entries:
     domain_information = {}
-    for website in websites[:40]:
+    for website in websites:
         # set scan time
         domain_information[website] = {"scan_time": time.time()}
         # set ipv4 addresses
@@ -23,7 +23,8 @@ if __name__ == '__main__':
         # set http server
         domain_information[website]["http_server"] = get_http_server(website)
         # set insecure http request
-        get_insecure_http(domain_information[website]["ipv4_addresses"][0])
+        domain_information[website]["insecure_http"] = get_insecure_http(domain_information[website]["ipv4_addresses"][0])
+
 
     # write data to output file:
     output_file = sys.argv[2]
