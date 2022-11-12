@@ -17,4 +17,3 @@ if __name__ == '__main__':
     with open(output_file, "w") as f:
         json.dump(domain_information, f, sort_keys=True, indent=4)
 
-        #update repo on moore
