@@ -9,7 +9,7 @@ def get_insecure_http(ip):
                                      timeout=15, stderr=subprocess.STDOUT).decode("utf - 8")
     result = result[result.find("80/tcp"):][:result.find("\n")]
     # result = result[:result.find("\n")]
-    print(result)
+    # print(result)
 
 def get_http_server(website):
     try:
