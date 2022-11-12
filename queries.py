@@ -12,7 +12,6 @@ def rec_get_redirect_to_https(website, iter):
     if iter == 10:
         return False
     try:
-        print(website)
         connection = http.client.HTTPConnection(website, timeout=3)
         connection.request("GET", "/")
         response = connection.getresponse()
@@ -23,6 +22,7 @@ def rec_get_redirect_to_https(website, iter):
             return True
         else:
             if redirect_link is not None and "http:" in redirect_link:
+                print(website)
                 return rec_get_redirect_to_https(redirect_link[:-1][7:], iter + 1)
             return False
     except socket.timeout:
