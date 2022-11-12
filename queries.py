@@ -6,7 +6,7 @@ import socket
 
 def get_insecure_http(ip):
     result = subprocess.check_output(["nmap", ip],
-                                     timeout=3.5, stderr=subprocess.STDOUT).decode("utf - 8")
+                                     timeout=15, stderr=subprocess.STDOUT).decode("utf - 8")
     print(result)
 
 def get_http_server(website):
