@@ -12,6 +12,7 @@ def rec_get_redirect_to_https(website, iter):
     if iter == 10:
         return False
     try:
+        print(website)
         connection = http.client.HTTPConnection(website, timeout=3)
         connection.request("GET", "/")
         response = connection.getresponse()
