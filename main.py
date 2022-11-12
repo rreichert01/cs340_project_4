@@ -9,6 +9,7 @@ if __name__ == '__main__':
     domain_information = {}
     for website in websites:
         domain_information[website] = {"scan_time": time.time()}
+        get_ipv4(website)
 
     # write data to output file:
     output_file = sys.argv[2]
