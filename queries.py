@@ -20,6 +20,7 @@ def get_ip(website, type):
         try:
             result = subprocess.check_output(["nslookup", f"-type={type}", website, dns_server],
                                              timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
+            print(result)
             output = result[result.find("answer:"):].split("\n")
             for data in output:
                 if 'Address' in data:
