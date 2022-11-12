@@ -21,8 +21,8 @@ def rec_get_redirect_to_https(website, iter):
         if redirect_link is not None and "https:" in redirect_link:
             return True
         else:
-            if redirect_link is not None and "http:" in redirect_link:
-                print(website)
+            if redirect_link is not None and "http://" in redirect_link:
+                print(redirect_link)
                 return rec_get_redirect_to_https(redirect_link[:-1][7:], iter + 1)
             return False
     except socket.timeout:
