@@ -11,6 +11,7 @@ def get_redirect_to_https(website):
         response = connection.getresponse()
         if 300 <= response.status < 310:
             return False
+        print(response.getheaders())
         redirect_link = response.getheader("Location")
         if "https:" in redirect_link:
             return True
