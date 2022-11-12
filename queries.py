@@ -36,7 +36,7 @@ def get_ip(website, type):
             for data in output:
                 if 'Address' in data:
                     ip_arr.add(data.replace('Address: ', ''))
-        except subprocess.TimeoutExpired:
+        except [subprocess.TimeoutExpired, subprocess.CalledProcessError]:
             continue
         except FileNotFoundError:
             sys.stderr.write("Command-line tool 'nslookup' not found\n")
