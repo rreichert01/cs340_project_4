@@ -4,6 +4,22 @@ import sys
 import socket
 
 
+def get_redirect_to_https(website):
+    try:
+        connection = http.client.HTTPSConnection(website, timeout=2)
+        connection.request("GET", "/")
+        response = connection.getresponse()
+        if 300 <= response.status < 310:
+            return False
+        redirect_link = response.getheader("Location")
+        if "https:" in redirect_link:
+            return True
+        else:
+            return False
+    except socket.timeout:
+        return None
+
+
 def get_insecure_http(ip):
     try:
         result = subprocess.check_output(["nmap", ip, "-p", "80"],
@@ -14,7 +30,8 @@ def get_insecure_http(ip):
         else:
             return False
     except subprocess.TimeoutExpired:
-        return False
+        return None
+
 
 def get_http_server(website):
     try:

@@ -23,8 +23,13 @@ if __name__ == '__main__':
         # set http server
         domain_information[website]["http_server"] = get_http_server(website)
         # set insecure http request
-        domain_information[website]["insecure_http"] = get_insecure_http(domain_information[website]["ipv4_addresses"][0])
-
+        is_insecure = get_insecure_http(ipv4_list[0])
+        domain_information[website]["insecure_http"] = is_insecure
+        # set redirect_to_https
+        if is_insecure:
+            domain_information[website]["redirect_to_https"] = get_redirect_to_https(website)
+        else:
+            domain_information[website]["redirect_to_https"] = False
 
     # write data to output file:
     output_file = sys.argv[2]
