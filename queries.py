@@ -27,7 +27,7 @@ def rec_get_redirect_to_https(website, iter):
                     new_link = redirect_link
                 else:
                     new_link = redirect_link[:-1]
-                return rec_get_redirect_to_https(new_link, iter + 1)
+                return rec_get_redirect_to_https(new_link[7:], iter + 1)
             return False
     except socket.timeout:
         return None
