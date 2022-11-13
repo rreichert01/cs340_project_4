@@ -21,7 +21,7 @@ def get_redirect(website):
             return r.url
         else:
             return ""
-    except (requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout):
+    except (requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
         return ""
     # if iter == 10:
     #     return ""
