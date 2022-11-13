@@ -39,7 +39,6 @@ def get_RTT(ipv4_list):
             requests.get("http://" + ipv4, timeout=3, allow_redirects=False)
             end_time = time.time()
             rtt_n = (end_time - start_time) * 1000
-            print(rtt_n)
             if rtt_n < rtt[0]:
                 rtt[0] = rtt_n
             if rtt_n > rtt[1]:
