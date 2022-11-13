@@ -16,7 +16,7 @@ def get_tls_versions(website):
                                              timeout=10, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
             print("Protocol  : TLSv" in result)
             print(result)
-            if "Protocol  : TLSv" in result:
+            if "-----BEGIN CERTIFICATE-----" in result:
                 return_val.append(version)
         except subprocess.CalledProcessError as e:
             print("Process error")
