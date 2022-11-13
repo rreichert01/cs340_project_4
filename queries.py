@@ -7,14 +7,13 @@ import requests
 
 def get_hsts(website):
     try:
-        url = get_redirect(website)
-        result = subprocess.check_output(["curl", "-s", "-D-", url, "|", "grep", "-i", "Strict"],
-                                         timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
-        if "strict-transport-security: max-age=" in result:
+        website = website if website.startswith('http') else ('http://' + website)
+        r = requests.get(website, timeout=4)
+        if 'Strict-Transport-Security' in r.headers.keys():
             return True
         else:
             return False
-    except subprocess.TimeoutExpired:
+    except (requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
         return False
 
 
