@@ -6,18 +6,22 @@ import requests
 
 
 def get_rdns(ipv4_list):
+    rdns = []
     for ipv4 in ipv4_list:
         try:
             result = subprocess.check_output(["dig", "-x", ipv4],
                                              timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
             if "ANSWER: 0" in result:
                 continue
-            answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"): result.find("\n\n;; AUTHORITY "
-                                                                                                      "SECTION:")].split('\n')
-            print(answers)
-
+            answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"):
+                             result.find("\n\n;; AUTHORITY SECTION:")].split('\n')
+            for answer in answers:
+                rdns.append(answer[answer.find("PRT\t") + len("PRT\t"):])
         except subprocess.TimeoutExpired:
             continue
+    print(rdns)
+    return rdns
+
 
 def get_root_ca(website):
     try:
