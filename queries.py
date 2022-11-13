@@ -6,7 +6,6 @@ import requests
 
 
 def get_redirect_to_https(website):
-    website = website if website.startswith('http') else ('http://' + website)
     url = get_redirect(website)
     if "https:" in url:
         return True
@@ -16,7 +15,8 @@ def get_redirect_to_https(website):
 
 def get_redirect(website):
     try:
-        r = requests.get(website)
+        website = website if website.startswith('http') else ('http://' + website)
+        r = requests.get(website, timeout=4)
         if r.status_code == 200:
             return r.url
         else:
