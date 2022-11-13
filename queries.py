@@ -19,7 +19,7 @@ def get_RTT(ipv4_list):
                 rtt[0] = rtt_n
             if rtt_n > rtt[1]:
                 rtt[1] = rtt_n
-        except (requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout, ConnectionResetError):
+        except:
             continue
     if rtt == [float('inf'), -1]:
         return None
