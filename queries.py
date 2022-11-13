@@ -18,6 +18,7 @@ def get_tls_versions(website):
                 return_val.append(version)
         except subprocess.CalledProcessError as e:
             print("Process error")
+            print(e.output.decode())
             if "-----BEGIN CERTIFICATE-----" in e.output.decode("utf - 8"):
                 return_val.append(version)
             continue
