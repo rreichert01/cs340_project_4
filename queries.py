@@ -7,6 +7,32 @@ import time
 from maxminddb import open_database
 
 
+def get_sorted_root_ca(domain_information):
+    root_cas = {}
+    for host in domain_information.keys():
+        ca = domain_information[host]['root_ca']
+        if ca is not None:
+            if ca in root_cas.keys():
+                root_cas[ca] += 1
+            else:
+                root_cas[ca] = 1
+    root_cas_list = []
+    for ca in root_cas.keys():
+        root_cas_list.append([ca, root_cas[ca]])
+    root_cas_list.sort(key=lambda x: x[1], reverse=True)
+    return root_cas_list
+
+
+
+def get_sorted_rtt(domain_information):
+    all_rtt = []
+    for host in domain_information.keys():
+        if domain_information[host]['rtt_range'] is not None:
+            all_rtt.append([host, domain_information[host]['rtt_range']])
+    all_rtt.sort(key=lambda x: x[1][0])
+    return all_rtt
+
+
 def get_geo_location(ipv4_list):
     # mod = __import__('maxminddb', globals=globals())
     ret_val = set()
