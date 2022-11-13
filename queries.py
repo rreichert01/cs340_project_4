@@ -21,11 +21,14 @@ def get_redirect(website, iter):
                                          timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
         stat = result[result.find("HTTP/"):]
         stat = int(stat[stat.find(" ") + 1:stat.find(" ") + 4])
-        if not 300 <= stat < 310:
+        if stat == 200:
             return website
-        location = result[result.find("ocation: ") + len("ocation: "):]
-        redirect_link = location[:location.find('\r\n')]
-        return get_redirect(redirect_link, iter + 1)
+        elif 300 <= stat < 310:
+            location = result[result.find("ocation: ") + len("ocation: "):]
+            redirect_link = location[:location.find('\r\n')]
+            return get_redirect(redirect_link, iter + 1)
+        else:
+            return ""
         # if redirect_link is not None and "https:" in redirect_link:
         #     return True
         # else:
