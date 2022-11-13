@@ -13,7 +13,8 @@ def get_geo_location(ipv4_list):
     with open_database('GeoLite2-City.mmdb') as reader:
         for ipv4 in ipv4_list:
             result = reader.get(ipv4)
-            print(result["country"]['names']['en'] + result['subdivisions'][0]['names']['en'] + result['city']['names']['en'])
+            print(result.keys())
+            print(result["country"]['names']['en']  + result['city']['names']['en'])
 
 
 def get_RTT(ipv4_list):
