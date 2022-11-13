@@ -13,7 +13,6 @@ def rec_get_redirect_to_https(website, iter):
     if iter == 10:
         return False
     try:
-        print("here")
         result = subprocess.check_output(["curl", "-I", website],
                                          timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
         stat = result[result.find("HTTP/"):]
@@ -28,7 +27,7 @@ def rec_get_redirect_to_https(website, iter):
             if redirect_link is not None and "http://" in redirect_link:
                 return rec_get_redirect_to_https(redirect_link, iter + 1)
             return False
-    except socket.timeout:
+    except subprocess.TimeoutExpired:
         return None
 
 
