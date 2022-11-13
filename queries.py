@@ -10,7 +10,9 @@ def get_root_ca(website):
         result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443"],
                                          timeout=2, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
         ca = result[result.find("O = ") + len("O = "):]
-        return ca[:ca.find(',') + 1]
+        if ca[0] == "\"":
+            return ca[:ca.find('\'')]
+        return ca[:ca.find(',')]
     except subprocess.TimeoutExpired:
         return None
 
