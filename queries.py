@@ -14,6 +14,7 @@ def get_RTT(ipv4_list):
             r = requests.get("http://" + ipv4, timeout=2, allow_redirects=False)
             end_time = time.time()
             rtt_n = (end_time - start_time) * 1000
+            print(rtt_n)
             if rtt_n < rtt[0]:
                 rtt[0] = rtt_n
             elif rtt_n > rtt[1]:
@@ -21,6 +22,7 @@ def get_RTT(ipv4_list):
         except (
         requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
             continue
+    return rtt
 
 
 def get_rdns(ipv4_list):
