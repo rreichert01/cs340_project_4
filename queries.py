@@ -11,7 +11,6 @@ def get_root_ca(website):
                                          timeout=2, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
         ca = result[result.find("O = ") + len("O = "):]
         if ca[0] == "\"":
-            print(ca)
             return ca[1:ca[1:].find('\"')]
         return ca[:ca.find(',')]
     except subprocess.TimeoutExpired:
