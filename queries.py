@@ -20,10 +20,12 @@ def get_tls_versions(website):
             if "Protocol  : TLSv" in result:
                 return_val.append(version)
         except subprocess.CalledProcessError as e:
+            print("Process error")
             if "Protocol  : TLSv" in e.output.decode("utf - 8"):
                 return_val.append(version)
             continue
         except subprocess.TimeoutExpired:
+            print("Timeout")
             continue
         except FileNotFoundError:
             sys.stderr.write("Command-line tool 'openssl' not found\n")
