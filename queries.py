@@ -5,6 +5,17 @@ import socket
 import requests
 
 
+def get_rdns(ipv4_list):
+    for ipv4 in ipv4_list:
+        try:
+            result = subprocess.check_output(["dig", "-x", ip],
+                                             timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
+            answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"):]
+            print(answers)
+
+        except subprocess.TimeoutExpired:
+            return None
+
 def get_root_ca(website):
     try:
         result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443"],
@@ -15,6 +26,7 @@ def get_root_ca(website):
         return ca[:ca.find(',')]
     except subprocess.TimeoutExpired:
         return None
+
 
 def get_tls_versions(website):
     tls_versions = ["TLSv1.3", "TLSv1.2", "TLSv1.1", "TLSv1.0"]
