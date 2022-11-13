@@ -10,6 +10,8 @@ def get_rdns(ipv4_list):
         try:
             result = subprocess.check_output(["dig", "-x", ipv4],
                                              timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
+            if "ANSWER: 0" in result:
+                continue
             answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"): result.find(";; AUTHORITY "
                                                                                                       "SECTION:")]
             print(answers)
