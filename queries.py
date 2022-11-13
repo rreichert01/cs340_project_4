@@ -6,8 +6,8 @@ import requests
 
 
 def get_tls_versions(website):
-    tls_versions = ["TLSv1.3","TLSv1.2", "TLSv1.1", "TLSv1.0"]
-    tls_commands = ["-tls1_3","-tls1_2", "-tls1_1", "-tls1"]
+    tls_versions = ["TLSv1.3", "TLSv1.2", "TLSv1.1", "TLSv1.0"]
+    tls_commands = ["-tls1_3", "-tls1_2", "-tls1_1", "-tls1"]
     return_val = []
     for index, version in enumerate(tls_versions):
         try:
@@ -23,7 +23,11 @@ def get_tls_versions(website):
             continue
         except subprocess.TimeoutExpired:
             continue
+        except FileNotFoundError:
+            sys.stderr.write("Command-line tool 'openssl' not found\n")
+            return []
     return return_val
+
 
 def get_hsts(website):
     try:
@@ -67,6 +71,9 @@ def get_insecure_http(ip):
         else:
             return False
     except subprocess.TimeoutExpired:
+        return None
+    except FileNotFoundError:
+        sys.stderr.write("Command-line tool 'nmap' not found\n")
         return None
 
 
