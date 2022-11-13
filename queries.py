@@ -13,7 +13,7 @@ def get_tls_versions(website):
         try:
             print(" ".join(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]]))
             result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]],
-                                             timeout=10, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
+                                             timeout=2, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
             if "-----BEGIN CERTIFICATE-----" in result:
                 return_val.append(version)
         except subprocess.CalledProcessError as e:
@@ -33,7 +33,7 @@ def get_tls_versions(website):
 def get_hsts(website):
     try:
         website = website if website.startswith('http') else ('http://' + website)
-        r = requests.get(website, timeout=4)
+        r = requests.get(website, timeout=2)
         if 'Strict-Transport-Security' in r.headers.keys():
             return True
         else:
@@ -53,7 +53,7 @@ def get_redirect_to_https(website):
 def get_redirect(website):
     try:
         website = website if website.startswith('http') else ('http://' + website)
-        r = requests.get(website, timeout=4)
+        r = requests.get(website, timeout=2)
         if r.status_code == 200:
             return r.url
         else:
@@ -65,7 +65,7 @@ def get_redirect(website):
 def get_insecure_http(ip):
     try:
         result = subprocess.check_output(["nmap", ip, "-p", "80"],
-                                         timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
+                                         timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
         answer = result[result.find("80/tcp"):][:result.find("\n")]
         if "80/tcp open  http" in answer:
             return True
