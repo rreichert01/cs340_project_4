@@ -23,9 +23,9 @@ def get_geo_location(ipv4_list):
             elif 'registered_country' in keys:
                 country = result["registered_country"]['names']['en']
             if 'subdivisions' in keys:
-                state = result['subdivisions'][0]['names']['en'] + "," if country != "" else ""
+                state = result['subdivisions'][0]['names']['en'] + ", " if country != "" else ""
             if 'city' in keys:
-                city = result["city"]['names']['en'] + "," if country != "" or state != "" else ""
+                city = result["city"]['names']['en'] + ", " if country != "" or state != "" else ""
             ret_val.add(city + state + country)
     return list(ret_val)
 
