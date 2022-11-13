@@ -11,7 +11,7 @@ def get_RTT(ipv4_list):
     for ipv4 in ipv4_list:
         try:
             start_time = time.time()
-            requests.get("http://" + ipv4, timeout=2, allow_redirects=False)
+            requests.get("http://" + ipv4, timeout=3, allow_redirects=False)
             end_time = time.time()
             rtt_n = (end_time - start_time) * 1000
             print(rtt_n)
@@ -19,9 +19,11 @@ def get_RTT(ipv4_list):
                 rtt[0] = rtt_n
             if rtt_n > rtt[1]:
                 rtt[1] = rtt_n
-        except (
-        requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
+        except (requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout,
+                requests.exceptions.ReadTimeout, ConnectionResetError):
             continue
+    if rtt == [float('inf'), -1]:
+        return None
     return rtt
 
 
@@ -30,7 +32,7 @@ def get_rdns(ipv4_list):
     for ipv4 in ipv4_list:
         try:
             result = subprocess.check_output(["dig", "-x", ipv4],
-                                             timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
+                                             timeout=3, stderr=subprocess.STDOUT).decode("utf - 8")
             if "ANSWER: 0" in result:
                 continue
             answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"): result.find("\n\n;; "
@@ -47,7 +49,7 @@ def get_rdns(ipv4_list):
 def get_root_ca(website):
     try:
         result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443"],
-                                         timeout=2, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
+                                         timeout=3, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
         ca = result[result.find("O = ") + len("O = "):]
         if ca[0] == "\"":
             return ca[1:ca[1:].find('\"')]
@@ -63,7 +65,7 @@ def get_tls_versions(website):
     for index, version in enumerate(tls_versions):
         try:
             result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]],
-                                             timeout=2, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
+                                             timeout=3, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
             if "-----BEGIN CERTIFICATE-----" in result:
                 return_val.append(version)
         except subprocess.CalledProcessError as e:
@@ -81,7 +83,7 @@ def get_tls_versions(website):
 def get_hsts(website):
     try:
         website = website if website.startswith('http') else ('http://' + website)
-        r = requests.get(website, timeout=2)
+        r = requests.get(website, timeout=3)
         if 'Strict-Transport-Security' in r.headers.keys():
             return True
         else:
@@ -101,7 +103,7 @@ def get_redirect_to_https(website):
 def get_redirect(website):
     try:
         website = website if website.startswith('http') else ('http://' + website)
-        r = requests.get(website, timeout=2)
+        r = requests.get(website, timeout=3)
         if r.status_code == 200:
             return r.url
         else:
@@ -113,7 +115,7 @@ def get_redirect(website):
 def get_insecure_http(ip):
     try:
         result = subprocess.check_output(["nmap", ip, "-p", "80"],
-                                         timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
+                                         timeout=3, stderr=subprocess.STDOUT).decode("utf - 8")
         answer = result[result.find("80/tcp"):][:result.find("\n")]
         if "80/tcp open  http" in answer:
             return True
@@ -128,7 +130,7 @@ def get_insecure_http(ip):
 
 def get_http_server(website):
     try:
-        connection = http.client.HTTPSConnection(website, timeout=2)
+        connection = http.client.HTTPSConnection(website, timeout=3)
         connection.request("GET", "/")
         response = connection.getresponse()
         return response.getheader("Server")
@@ -158,7 +160,7 @@ def get_ip(website, type):
     for dns_server in dns_servers:
         try:
             result = subprocess.check_output(["nslookup", f"-type={type}", website, dns_server],
-                                             timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
+                                             timeout=3, stderr=subprocess.STDOUT).decode("utf - 8")
             output = result[result.find("answer:"):].split("\n")
             for data in output:
                 if 'Address' in data:
