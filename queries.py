@@ -18,8 +18,9 @@ def get_tls_versions(website):
                 return_val.append(version)
         except subprocess.CalledProcessError as e:
             # print(f"Process error {version}")
-            print(e.stderr)
-            print(e.output.decode())
+            if index == 3:
+                print(e.stderr)
+                print(e.output.decode())
             if "Protocol  : TLSv1" in e.output.decode("utf - 8"):
                 return_val.append(version)
             continue
