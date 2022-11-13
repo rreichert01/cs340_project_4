@@ -12,7 +12,7 @@ def get_rdns(ipv4_list):
                                              timeout=2, stderr=subprocess.STDOUT).decode("utf - 8")
             if "ANSWER: 0" in result:
                 continue
-            answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"): result.find(";; AUTHORITY "
+            answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"): result.find("\n\n;; AUTHORITY "
                                                                                                       "SECTION:")].split('\n')
             print(answers)
 
