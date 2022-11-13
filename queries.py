@@ -7,17 +7,18 @@ import time
 from maxminddb import open_database
 
 
-
 def get_geo_location(ipv4_list):
     # mod = __import__('maxminddb', globals=globals())
     ret_val = set()
     with open_database('GeoLite2-City.mmdb') as reader:
         for ipv4 in ipv4_list:
             result = reader.get(ipv4)
+            if result is None:
+                continue
             keys = result.keys()
             country = ""
             city = ""
-            state= ""
+            state = ""
             if 'country' in keys:
                 country = result["country"]['names']['en']
             elif 'registered_country' in keys:
