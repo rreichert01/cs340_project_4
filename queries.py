@@ -14,7 +14,7 @@ def get_geo_location(ipv4_list):
         for ipv4 in ipv4_list:
             result = reader.get(ipv4)
             print(result.keys())
-            print(result["country"]['names']['en']  + result['city']['names']['en'])
+            print(result["country"]['names']['en'])
 
 
 def get_RTT(ipv4_list):
