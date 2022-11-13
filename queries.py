@@ -5,6 +5,20 @@ import socket
 import requests
 
 
+def get_tls_versions(website):
+    tls_versions = ["TLSv1.3","TLSv1.2", "TLSv1.1", "TLSv1.0"]
+    tls_commands = ["-tls1_3","-tls1_2", "-tls1_1", "-tls1"]
+    return_val = []
+    for index, version in tls_versions:
+        try:
+            result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]],
+                                             timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
+            if "Protocol  : TLSv" in result:
+                return_val.append(version)
+        except subprocess.TimeoutExpired:
+            continue
+    return return_val
+
 def get_hsts(website):
     try:
         website = website if website.startswith('http') else ('http://' + website)

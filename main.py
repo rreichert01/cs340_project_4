@@ -9,7 +9,7 @@ if __name__ == '__main__':
     websites = process_txt(website_file)
     # create dictionary + populate entries:
     domain_information = {}
-    for website in websites:
+    for website in websites[:10]:
         # set scan time
         domain_information[website] = {"scan_time": time.time()}
         # set ipv4 addresses
@@ -32,6 +32,8 @@ if __name__ == '__main__':
             domain_information[website]["redirect_to_https"] = False
         # set hsts
         domain_information[website]["hsts"] = get_hsts(website)
+        # set tls versions
+        domain_information[website]["tls_versions"] = get_tls_versions(website)
 
     # write data to output file:
     output_file = sys.argv[2]
