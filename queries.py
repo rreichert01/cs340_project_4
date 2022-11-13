@@ -5,6 +5,19 @@ import socket
 import requests
 
 
+def get_hsts(website):
+    try:
+        url = get_redirect(website)
+        result = subprocess.check_output(["curl", "-s", "-D-", url, "|", "grep", "-i", "Strict"],
+                                         timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
+        if "strict-transport-security: max-age=" in result:
+            return True
+        else:
+            return False
+    except subprocess.TimeoutExpired:
+        return False
+
+
 def get_redirect_to_https(website):
     url = get_redirect(website)
     if "https:" in url:
@@ -23,32 +36,6 @@ def get_redirect(website):
             return ""
     except (requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
         return ""
-    # if iter == 10:
-    #     return ""
-    # try:
-    #     print(website)
-    #     result = subprocess.check_output(["curl", "-I", website],
-    #                                      timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
-    #     stat = result[result.find("HTTP/"):]
-    #     stat = int(stat[stat.find(" ") + 1:stat.find(" ") + 4])
-    #     if stat == 200:
-    #         return website
-    #     elif 300 <= stat < 310:
-    #         location = result[result.find("ocation: ") + len("ocation: "):]
-    #         redirect_link = location[:location.find('\r\n')]
-    #         if "http" not in redirect_link:
-    #             return website
-    #         return get_redirect(redirect_link, iter + 1)
-    #     else:
-    #         return ""
-    #     # if redirect_link is not None and "https:" in redirect_link:
-    #     #     return True
-    #     # else:
-    #     #     if redirect_link is not None and "http://" in redirect_link:
-    #     #         return rec_get_redirect_to_https(redirect_link, iter + 1)
-    #     #     return False
-    # except subprocess.TimeoutExpired:
-    #     return ""
 
 
 def get_insecure_http(ip):
