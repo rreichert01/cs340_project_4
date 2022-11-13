@@ -4,6 +4,13 @@ import sys
 import socket
 import requests
 import time
+import maxminddb
+
+
+def get_geo_location(ipv4_list):
+    with maxminddb.open_database('GeoLite2-City.mmdb') as reader:
+        for ipv4 in ipv4_list:
+            print(reader.get(ipv4))
 
 
 def get_RTT(ipv4_list):

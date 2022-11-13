@@ -37,7 +37,9 @@ if __name__ == '__main__':
         # # set rdns
         # domain_information[website]["rdns_names"] = get_rdns(ipv4_list)
         # set rtt
-        domain_information[website]["rtt_range"] = get_RTT(ipv4_list)
+        # domain_information[website]["rtt_range"] = get_RTT(ipv4_list)
+        # set geo location
+        domain_information[website]["geo_locations"] = get_geo_location(ipv4_list)
 
     # write data to output file:
     output_file = sys.argv[2]
