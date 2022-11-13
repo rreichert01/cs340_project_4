@@ -39,5 +39,13 @@ if __name__ == '__main__':
         table.add_row(entry)
     out_file.writelines(table.draw() + '\n\n\n')
     table.reset()
+    # do web server dump
+    sorted_server = get_sorted_servers(json_file)
+    table.header(["Server:", "Count"])
+    for entry in sorted_server:
+        table.add_row(entry)
+    out_file.writelines(table.draw() + '\n\n\n')
+    table.reset()
+
     out_file.close()
     # print(table.draw())

@@ -7,6 +7,21 @@ import time
 from maxminddb import open_database
 
 
+def get_sorted_servers(domain_information):
+    servers = {}
+    for host in domain_information.keys():
+        ca = domain_information[host]['http_server']
+        if ca is not None:
+            if ca in servers.keys():
+                servers[ca] += 1
+            else:
+                servers[ca] = 1
+    servers_list = []
+    for ca in servers.keys():
+        servers_list.append([ca, servers[ca]])
+    servers_list.sort(key=lambda x: x[1], reverse=True)
+    return servers_list
+
 def get_sorted_root_ca(domain_information):
     root_cas = {}
     for host in domain_information.keys():
