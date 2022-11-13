@@ -19,7 +19,7 @@ def rec_get_redirect_to_https(website, iter):
         stat = int(stat[stat.find(" ") + 1:stat.find(" ") + 4])
         if not 300 <= stat < 310:
             return False
-        location = result[result.find("Location: ") + len("Location: "):]
+        location = result[result.find("ocation: ") + len("ocation: "):]
         redirect_link = location[:location.find('\r\n')]
         if redirect_link is not None and "https:" in redirect_link:
             return True
