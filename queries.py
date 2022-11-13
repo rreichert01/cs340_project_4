@@ -27,7 +27,7 @@ def get_geo_location(ipv4_list):
             if 'city' in keys:
                 city = result["city"]['names']['en'] + "," if country != "" or state != "" else ""
             ret_val.add(city + state + country)
-    return ret_val
+    return list(ret_val)
 
 
 def get_RTT(ipv4_list):
