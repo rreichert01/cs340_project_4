@@ -26,6 +26,8 @@ def get_redirect(website, iter):
         elif 300 <= stat < 310:
             location = result[result.find("ocation: ") + len("ocation: "):]
             redirect_link = location[:location.find('\r\n')]
+            if "http" not in redirect_link:
+                return website
             return get_redirect(redirect_link, iter + 1)
         else:
             return ""
