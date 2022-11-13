@@ -14,15 +14,13 @@ def get_tls_versions(website):
             print(" ".join(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]]))
             result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]],
                                              timeout=10, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
-            print("Protocol  : TLSv" in result)
-            print(result)
             if "-----BEGIN CERTIFICATE-----" in result:
                 return_val.append(version)
-        except subprocess.CalledProcessError as e:
-            print("Process error")
-            if "Protocol  : TLSv" in e.output.decode("utf - 8"):
-                return_val.append(version)
-            continue
+        # except subprocess.CalledProcessError as e:
+        #     print("Process error")
+        #     if "Protocol  : TLSv" in e.output.decode("utf - 8"):
+        #         return_val.append(version)
+        #     continue
         except subprocess.TimeoutExpired:
             print("Timeout")
             continue
