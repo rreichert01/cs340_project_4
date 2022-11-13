@@ -11,7 +11,9 @@ from maxminddb import open_database
 def get_geo_location(ipv4_list):
     # mod = __import__('maxminddb', globals=globals())
     with open_database('GeoLite2-City.mmdb') as reader:
-        print(reader.get(ipv4_list[0]))
+        for ipv4 in ipv4_list:
+            result = reader.get(ipv4)
+            print(result["country"]['names']['en'] + result['subdivisions'][0]['names']['en'] + result['city']['names']['en'])
 
 
 def get_RTT(ipv4_list):
