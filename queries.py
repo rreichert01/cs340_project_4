@@ -14,9 +14,8 @@ def get_tls_versions(website):
             print(" ".join(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]]))
             result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]],
                                              timeout=10, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
-            print("After request")
-            print(result)
             print("Protocol  : TLSv" in result)
+            print(result)
             if "Protocol  : TLSv" in result:
                 return_val.append(version)
         except subprocess.CalledProcessError as e:
