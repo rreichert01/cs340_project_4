@@ -5,6 +5,15 @@ import socket
 import requests
 
 
+def get_root_ca(website):
+    try:
+        result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443"],
+                                         timeout=2, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
+        ca = result[result.find("O = ") + len("O = "):]
+        return ca[:ca.find(',')]
+    except subprocess.TimeoutExpired:
+        return None
+
 def get_tls_versions(website):
     tls_versions = ["TLSv1.3", "TLSv1.2", "TLSv1.1", "TLSv1.0"]
     tls_commands = ["-tls1_3", "-tls1_2", "-tls1_1", "-tls1"]
