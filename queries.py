@@ -4,7 +4,6 @@ import sys
 import socket
 
 
-
 def get_redirect_to_https(website):
     url = get_redirect(website, 1)
     if "https:" in url:
@@ -15,7 +14,7 @@ def get_redirect_to_https(website):
 
 def get_redirect(website, iter):
     if iter == 10:
-        return website
+        return ""
     try:
         result = subprocess.check_output(["curl", "-I", website],
                                          timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
@@ -36,7 +35,7 @@ def get_redirect(website, iter):
         #         return rec_get_redirect_to_https(redirect_link, iter + 1)
         #     return False
     except subprocess.TimeoutExpired:
-        return None
+        return ""
 
 
 def get_insecure_http(ip):
