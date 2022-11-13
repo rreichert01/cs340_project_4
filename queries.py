@@ -11,21 +11,15 @@ def get_tls_versions(website):
     return_val = []
     for index, version in enumerate(tls_versions):
         try:
-            # print(" ".join(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]]))
             result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]],
                                              timeout=2, stderr=subprocess.STDOUT, input=b' ').decode("utf - 8")
             if "-----BEGIN CERTIFICATE-----" in result:
                 return_val.append(version)
         except subprocess.CalledProcessError as e:
-            # print(f"Process error {version}")
-            if index == 0:
-                print(e.stderr)
-                print(e.output.decode())
-            if "Protocol  : TLSv1" in e.output.decode("utf - 8"):
+            if "SSL-Session:" in e.output.decode("utf - 8"):
                 return_val.append(version)
             continue
         except subprocess.TimeoutExpired:
-            print("Timeout")
             continue
         except FileNotFoundError:
             sys.stderr.write("Command-line tool 'openssl' not found\n")
