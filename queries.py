@@ -11,9 +11,9 @@ def get_tls_versions(website):
     return_val = []
     for index, version in enumerate(tls_versions):
         try:
-            print("Before request")
+            print(f"{website}:443")
             result = subprocess.check_output(["openssl", "s_client", "-connect", f"{website}:443", tls_commands[index]],
-                                             timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
+                                             timeout=10, stderr=subprocess.STDOUT).decode("utf - 8")
             print("After request")
             print(result)
             print("Protocol  : TLSv" in result)
