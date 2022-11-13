@@ -18,7 +18,7 @@ def get_rdns(ipv4_list):
                                                                                                       "SECTION:")].split('\n')
             print(answers)
             for answer in answers:
-                rdns.append(answer[answer.find("PRT\t") + len("PRT\t"):])
+                rdns.append(answer[answer.find("PTR\t") + len("PTR\t"):])
         except subprocess.TimeoutExpired:
             continue
     return rdns
