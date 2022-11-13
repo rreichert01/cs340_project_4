@@ -4,6 +4,7 @@ import sys
 import socket
 
 
+
 def get_redirect_to_https(website):
     return rec_get_redirect_to_https(website, 1)
 
@@ -12,24 +13,20 @@ def rec_get_redirect_to_https(website, iter):
     if iter == 10:
         return False
     try:
-        connection = http.client.HTTPConnection(website, timeout=3)
-        connection.request("GET", "/")
-        response = connection.getresponse()
-        if not 300 <= response.status < 310:
+        print("here")
+        result = subprocess.check_output(["curl", "-I", website],
+                                         timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
+        stat = result[result.find("HTTP/"):]
+        stat = int(stat[stat.find(" ") + 1:stat.find(" ") + 4])
+        if not 300 <= stat < 310:
             return False
-        redirect_link = response.getheader("Location")
+        location = result[result.find("Location: ") + len("Location: "):]
+        redirect_link = location[:location.find('\r\n')]
         if redirect_link is not None and "https:" in redirect_link:
             return True
         else:
             if redirect_link is not None and "http://" in redirect_link:
-                print(redirect_link)
-                print(f"link: {redirect_link}, should be: {redirect_link[7:]} boolean: {redirect_link[-1] == '/'}, {redirect_link[-1]}")
-                if redirect_link[-1] != '/':
-                    new_link = redirect_link[7:]
-                else:
-                    new_link = redirect_link[:-1][7:]
-                print(new_link)
-                return rec_get_redirect_to_https(new_link, iter + 1)
+                return rec_get_redirect_to_https(redirect_link, iter + 1)
             return False
     except socket.timeout:
         return None
