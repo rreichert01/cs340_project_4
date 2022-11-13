@@ -10,8 +10,8 @@ if __name__ == '__main__':
     # create dictionary + populate entries:
     domain_information = {}
     for website in websites[:10]:
-        # # set scan time
-        # domain_information[website] = {"scan_time": time.time()}
+        # set scan time
+        domain_information[website] = {"scan_time": time.time()}
         # # set ipv4 addresses
         # ipv4_list = get_ipv4(website)
         # if len(ipv4_list) != 0:
