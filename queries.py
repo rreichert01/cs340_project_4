@@ -11,13 +11,13 @@ def get_RTT(ipv4_list):
     for ipv4 in ipv4_list:
         try:
             start_time = time.time()
-            r = requests.get("http://" + ipv4, timeout=2, allow_redirects=False)
+            requests.get("http://" + ipv4, timeout=2, allow_redirects=False)
             end_time = time.time()
             rtt_n = (end_time - start_time) * 1000
             print(rtt_n)
             if rtt_n < rtt[0]:
                 rtt[0] = rtt_n
-            elif rtt_n > rtt[1]:
+            if rtt_n > rtt[1]:
                 rtt[1] = rtt_n
         except (
         requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
