@@ -4,13 +4,14 @@ import sys
 import socket
 import requests
 import time
-import maxminddb
+from maxminddb import open_database
+
 
 
 def get_geo_location(ipv4_list):
-    with maxminddb.open_database('GeoLite2-City.mmdb') as reader:
-        for ipv4 in ipv4_list:
-            print(reader.get(ipv4))
+    # mod = __import__('maxminddb', globals=globals())
+    with open_database('GeoLite2-City.mmdb') as reader:
+        reader.get(ipv4_list[0])
 
 
 def get_RTT(ipv4_list):
@@ -170,7 +171,9 @@ def get_ip(website, type):
             output = result[result.find("answer:"):].split("\n")
             for data in output:
                 if 'Address' in data:
-                    ip_arr.add(data.replace('Address: ', ''))
+                    data = data.replace('Address: ', '')
+                    data.strip()
+                    ip_arr.add(data)
         except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
             continue
         # except subprocess.CalledProcessError:
