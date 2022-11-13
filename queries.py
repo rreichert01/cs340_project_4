@@ -13,11 +13,11 @@ def get_rdns(ipv4_list):
             if "ANSWER: 0" in result:
                 continue
             answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"): result.find(";; AUTHORITY "
-                                                                                                      "SECTION:")]
+                                                                                                      "SECTION:")].split('\n')
             print(answers)
 
         except subprocess.TimeoutExpired:
-            return None
+            continue
 
 def get_root_ca(website):
     try:
