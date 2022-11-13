@@ -12,8 +12,8 @@ if __name__ == '__main__':
         domain_information[website] = {"scan_time": time.time()}
         # set ipv4 addresses
         ipv4_list = get_ipv4(website)
-        # if len(ipv4_list) != 0:
-        #     domain_information[website]["ipv4_addresses"] = ipv4_list
+        if len(ipv4_list) != 0:
+            domain_information[website]["ipv4_addresses"] = ipv4_list
         # # set ipv6 addresses
         # ipv6_list = get_ipv6(website)
         # if len(ipv6_list) != 0:
