@@ -3,6 +3,24 @@ import subprocess
 import sys
 import socket
 import requests
+import time
+
+
+def get_RTT(ipv4_list):
+    rtt = [float('inf'), -1]
+    for ipv4 in ipv4_list:
+        try:
+            start_time = time.time()
+            r = requests.get("http://" + ipv4, timeout=2, allow_redirects=False)
+            end_time = time.time()
+            rtt_n = (end_time - start_time) * 1000
+            if rtt_n < rtt[0]:
+                rtt[0] = rtt_n
+            elif rtt_n > rtt[1]:
+                rtt[1] = rtt_n
+        except (
+        requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
+            continue
 
 
 def get_rdns(ipv4_list):
@@ -15,12 +33,14 @@ def get_rdns(ipv4_list):
                 continue
             answers = result[result.find("ANSWER SECTION:\n") + len("ANSWER SECTION:\n"): result.find("\n\n;; "
                                                                                                       "AUTHORITY "
-                                                                                                      "SECTION:")].split('\n')
+                                                                                                      "SECTION:")].split(
+                '\n')
             for answer in answers:
                 rdns.append(answer[answer.find("PTR\t") + len("PTR\t"):])
         except subprocess.TimeoutExpired:
             continue
     return rdns
+
 
 def get_root_ca(website):
     try:
