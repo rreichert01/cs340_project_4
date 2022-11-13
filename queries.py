@@ -2,43 +2,53 @@ import http.client
 import subprocess
 import sys
 import socket
+import requests
 
 
 def get_redirect_to_https(website):
-    url = get_redirect(website, 1)
+    website = website if website.startswith('http') else ('http://' + website)
+    url = get_redirect(website)
     if "https:" in url:
         return True
     else:
         return False
 
 
-def get_redirect(website, iter):
-    if iter == 10:
-        return ""
+def get_redirect(website):
     try:
-        print(website)
-        result = subprocess.check_output(["curl", "-I", website],
-                                         timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
-        stat = result[result.find("HTTP/"):]
-        stat = int(stat[stat.find(" ") + 1:stat.find(" ") + 4])
-        if stat == 200:
-            return website
-        elif 300 <= stat < 310:
-            location = result[result.find("ocation: ") + len("ocation: "):]
-            redirect_link = location[:location.find('\r\n')]
-            if "http" not in redirect_link:
-                return website
-            return get_redirect(redirect_link, iter + 1)
+        r = requests.get(website)
+        if r.status_code == 200:
+            return r.url
         else:
             return ""
-        # if redirect_link is not None and "https:" in redirect_link:
-        #     return True
-        # else:
-        #     if redirect_link is not None and "http://" in redirect_link:
-        #         return rec_get_redirect_to_https(redirect_link, iter + 1)
-        #     return False
-    except subprocess.TimeoutExpired:
+    except (requests.exceptions.TooManyRedirects, requests.exceptions.ConnectTimeout):
         return ""
+    # if iter == 10:
+    #     return ""
+    # try:
+    #     print(website)
+    #     result = subprocess.check_output(["curl", "-I", website],
+    #                                      timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
+    #     stat = result[result.find("HTTP/"):]
+    #     stat = int(stat[stat.find(" ") + 1:stat.find(" ") + 4])
+    #     if stat == 200:
+    #         return website
+    #     elif 300 <= stat < 310:
+    #         location = result[result.find("ocation: ") + len("ocation: "):]
+    #         redirect_link = location[:location.find('\r\n')]
+    #         if "http" not in redirect_link:
+    #             return website
+    #         return get_redirect(redirect_link, iter + 1)
+    #     else:
+    #         return ""
+    #     # if redirect_link is not None and "https:" in redirect_link:
+    #     #     return True
+    #     # else:
+    #     #     if redirect_link is not None and "http://" in redirect_link:
+    #     #         return rec_get_redirect_to_https(redirect_link, iter + 1)
+    #     #     return False
+    # except subprocess.TimeoutExpired:
+    #     return ""
 
 
 def get_insecure_http(ip):
