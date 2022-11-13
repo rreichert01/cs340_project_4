@@ -16,6 +16,7 @@ def get_redirect(website, iter):
     if iter == 10:
         return ""
     try:
+        print(website)
         result = subprocess.check_output(["curl", "-I", website],
                                          timeout=4, stderr=subprocess.STDOUT).decode("utf - 8")
         stat = result[result.find("HTTP/"):]
