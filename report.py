@@ -47,5 +47,24 @@ if __name__ == '__main__':
     out_file.writelines(table.draw() + '\n\n\n')
     table.reset()
 
+    table.header(["Feature", "% Supporting"])
+    # do get TLS stats
+    tls_stats = get_tls_stats(json_file)
+    for tls_stat in tls_stats.keys():
+        table.add_row([tls_stat, tls_stats[tls_stat]])
+    # do get insecure_http stats
+    insecure_http_stat = get_insecure_http_stats(json_file)
+    table.add_row(["Plain http", insecure_http_stat])
+    # do get redirect_to_https stats
+    redirect_http_stat = get_redirect_http_stats(json_file)
+    table.add_row(["Redirect to https", redirect_http_stat])
+    # do get hsts stats
+    hsts_stat = get_hsts_stats(json_file)
+    table.add_row(["Hsts enabled", hsts_stat])
+    # do get ipv6 stats
+    ipv6_stat = get_ipv6_stats(json_file)
+    table.add_row(["ipv6", ipv6_stat])
+    out_file.writelines(table.draw() + '\n\n\n')
+
     out_file.close()
     # print(table.draw())

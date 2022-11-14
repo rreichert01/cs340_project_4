@@ -7,6 +7,64 @@ import time
 from maxminddb import open_database
 
 
+def get_ipv6_stats(domain_information):
+    num_hosts = 0
+    num_support = 0
+    for host in domain_information.keys():
+        num_hosts += 1
+        if "ipv6_addresses" in domain_information[host].keys():
+            num_support += 1
+    return int((num_support / num_hosts) * 100)
+
+def get_hsts_stats(domain_information):
+    num_hosts = 0
+    num_support = 0
+    for host in domain_information.keys():
+        num_hosts += 1
+        supports = domain_information[host]["hsts"]
+        if supports:
+            num_support += 1
+    return (num_support / num_hosts) * 100
+
+
+def get_redirect_http_stats(domain_information):
+    num_hosts = 0
+    num_support = 0
+    for host in domain_information.keys():
+        num_hosts += 1
+        supports = domain_information[host]["redirect_to_https"]
+        if supports:
+            num_support += 1
+    return (num_support / num_hosts) * 100
+
+
+def get_insecure_http_stats(domain_information):
+    num_hosts = 0
+    num_support = 0
+    for host in domain_information.keys():
+        num_hosts += 1
+        supports = domain_information[host]["insecure_http"]
+        if supports:
+            num_support += 1
+    return (num_support / num_hosts) * 100
+
+
+def get_tls_stats(domain_information):
+    count = 0
+    tally = {}
+    for host in domain_information.keys():
+        count += 1
+        tls_versions = domain_information[host]["tls_versions"]
+        for version in tls_versions:
+            if version in tally.keys():
+                tally[version] += 1
+            else:
+                tally[version] = 1
+    for version in tally.keys():
+        tally[version] = (tally[version] / count) * 100
+    return tally
+
+
 def get_sorted_servers(domain_information):
     servers = {}
     for host in domain_information.keys():
@@ -22,6 +80,7 @@ def get_sorted_servers(domain_information):
     servers_list.sort(key=lambda x: x[1], reverse=True)
     return servers_list
 
+
 def get_sorted_root_ca(domain_information):
     root_cas = {}
     for host in domain_information.keys():
@@ -36,7 +95,6 @@ def get_sorted_root_ca(domain_information):
         root_cas_list.append([ca, root_cas[ca]])
     root_cas_list.sort(key=lambda x: x[1], reverse=True)
     return root_cas_list
-
 
 
 def get_sorted_rtt(domain_information):
