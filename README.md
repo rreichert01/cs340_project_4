@@ -1,0 +1,6 @@
+
+# Project Description
+This repository showcases a project completed as part of the Northwestern University course COMP_SCI_340-0_SEC1, Introduction to Networking. The course focuses on fundamental concepts in the design and implementation of computer communication networks, exploring protocols, and applications shaping contemporary networking landscapes. Covered topics include an overview of network architectures, applications (HTTP, Email, BitTorrent), network programming interfaces (e.g., sockets), transport protocols (TCP, UDP), flow and congestion control, IP, routing, IPv6, multicast, data link protocols, error-detection/correction, multiple access, LAN, Ethernet, wireless networks, and network security.
+
+## Project Details
+The specific project housed in this repository entails the development of a tool designed for network exploration and security auditing. This tool accepts a list of domains as input, probing them in various ways and generating a detailed report on network characteristics and security features/capabilities associated with each domain. Explore the codebase and documentation for deeper insights into the implemented tool and its contribution to network exploration and security auditing in diverse domains.
